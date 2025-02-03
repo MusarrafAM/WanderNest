@@ -20,7 +20,8 @@ function FormContainer({
   const [state, formAction] = useFormState(action, initialState);
   const { toast } = useToast();
 
-  //   whenever form submitted and the state changes we show a toast for it.
+  //! whenever form submitted and the state changes we show a toast for it.
+  //! This handles the toast in al forms.
   useEffect(() => {
     if (state.message) {
       toast({ description: state.message });

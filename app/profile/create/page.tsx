@@ -1,17 +1,16 @@
 import FormInput from "@/components/form/FormInput";
 import { SubmitButton } from "@/components/form/Buttons";
 import FormContainer from "@/components/form/FormContainer";
+import { createProfileAction } from "@/utils/actions";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-// to tell that this is a server action we need to put the "use server" at the start of the function.
-// server actions should be async
-const createProfileAction = async (prevState: any, formData: FormData) => {
-  "use server";
-  const firstName = formData.get("firstName") as string;
-  if (firstName !== "shakeAndBake") return { message: "there was an error..." };
-  return { message: "Profile Created" };
-};
-
-function CreateProfile() {
+async function CreateProfile() {
+  const user = await currentUser();
+  // after login using the clerk social login.
+  // he will be redirect to this page,
+  // if user already create/existed instead of showing this page we redirect to the home page. (in clerk metadata if we have the hasProfile, which we added when initially create a profile))
+  if (user?.privateMetadata?.hasProfile) redirect("/");
   return (
     <section>
       <h1 className="text-2xl font-semibold mb-8 capitalize">new user</h1>
