@@ -9,14 +9,42 @@ generator client {
 }
 
 model Profile {
-  id           String     @id @default(uuid()) // @id= primary key(id), @default = automatically generated, @uuid = (unique id)
-  clerkId      String     @unique
+  id           String     @id @default(uuid()) // Primary Key (PK), auto-generated UUID
+  clerkId      String     @unique // Unique identifier (e.g., from Clerk authentication)
   firstName    String
   lastName     String
   username     String
   email        String
   profileImage String
-  createdAt    DateTime   @default(now()) // @default = automatically generated
+  createdAt    DateTime   @default(now()) // Auto-generated timestamp
   updatedAt    DateTime   @updatedAt
+   // One Profile (User) can own multiple Properties, but each Property belongs to only one Profile (one to many rel).
+  properties      Property[] 
 
+}
+
+
+model Property {
+  id          String     @id @default(uuid())
+  name        String
+  tagline     String
+  category    String
+  image       String
+  country     String
+  description String
+  price       Int
+  guests      Int
+  bedrooms    Int
+  beds        Int
+  baths       Int
+  amenities   String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  // Relationship between Property and Profile
+  profile     Profile    @relation(fields: [profileId], references: [clerkId], onDelete: Cascade) 
+  // fields: [profileId] => Foreign Key (FK) in Property 
+  // references: [clerkId] => Primary Key (PK) in Profile 
+  // onDelete: Cascade => When a Profile is deleted, all its associated Property records will also be deleted.
+  profileId   String
 }

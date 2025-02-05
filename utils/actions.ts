@@ -1,6 +1,6 @@
 "use server";
 
-import { imageSchema, profileSchema, validateWithZodSchema } from "./schemas";
+import { imageSchema, profileSchema, propertySchema, validateWithZodSchema } from "./schemas";
 import db from "./db";
 import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
@@ -156,4 +156,65 @@ export const updateProfileImageAction = async (prevState: any, formData: FormDat
   } catch (error) {
     return renderError(error);
   }
+};
+
+export const createPropertyAction = async (
+  prevState: any,
+  formData: FormData
+): Promise<{ message: string }> => {
+  const user = await getAuthUser();
+
+  try {
+    const rawData = Object.fromEntries(formData);
+    const file = formData.get("image") as File;
+
+    // we don't have image validation on propertySchema. so validatedFields won't have the image filed.
+    const validatedFields = validateWithZodSchema(propertySchema, rawData);
+    const validatedFile = validateWithZodSchema(imageSchema, { image: file });
+    const fullPath = await uploadImage(validatedFile.image); // upload image to supabase.
+
+    await db.property.create({
+      data: {
+        ...validatedFields,
+        image: fullPath,
+        profileId: user.id,
+      },
+    });
+  } catch (error) {
+    return renderError(error);
+  }
+  redirect("/");
+};
+
+export const fetchProperties = async ({
+  search = "",
+  category,
+}: {
+  search?: string;
+  category?: string;
+}) => {
+  const properties = await db.property.findMany({
+    // if the search is undefined nothing will be fetched thats why we put empty string as a default value.
+    // even though we don't pass any category or search, Since we put empty string for search where will be applied for that.
+    where: {
+      category, // this is short for  category:category
+      OR: [
+        { name: { contains: search, mode: "insensitive" } },
+        { tagline: { contains: search, mode: "insensitive" } },
+      ],
+    },
+    select: {
+      // instead of getting all the data related to the property fetch only the needed ones.
+      id: true,
+      name: true,
+      tagline: true,
+      country: true,
+      image: true,
+      price: true,
+    },
+    orderBy: {
+      createdAt: "desc", // newest property will come first.
+    },
+  });
+  return properties;
 };
