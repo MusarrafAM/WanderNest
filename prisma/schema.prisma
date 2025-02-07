@@ -20,6 +20,8 @@ model Profile {
   updatedAt    DateTime   @updatedAt
    // One Profile (User) can own multiple Properties, but each Property belongs to only one Profile (one to many rel).
   properties      Property[] 
+  // One Profile (User) can have multiple Favorite properties, and each Property can have multiple favourite profiles (many to many rel).
+  favorites    Favorite[]
 
 }
 
@@ -47,4 +49,19 @@ model Property {
   // references: [clerkId] => Primary Key (PK) in Profile 
   // onDelete: Cascade => When a Profile is deleted, all its associated Property records will also be deleted.
   profileId   String
+  favorites    Favorite[]
+}
+
+
+model Favorite {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile   Profile  @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
+  profileId String
+
+  property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String
+
 }

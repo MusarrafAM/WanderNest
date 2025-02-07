@@ -1,13 +1,26 @@
-import { Button } from "@/components/ui/button";
+import CategoriesList from "@/components/home/CategoriesList";
+import PropertiesContainer from "@/components/home/PropertiesContainer";
+import LoadingCards from "@/components/card/LoadingCards";
+import { Suspense } from "react";
 
-const HomePage = () => {
+// this is how we access the searchParams in server component.
+function HomePage({ searchParams }: { searchParams: { category?: string; search?: string } }) {
+  // console.log(searchParams);
+
+  // if we fetch the properties in this page we won't be able to show skeleton loading.
+  // thats why in here we fetch in component not page.
   return (
-    <div>
-      <h1 className="text-3xl">HomeAway Project - Starter</h1>
-      <Button variant="outline" size="lg" className="capitalize mt-8">
-        click me
-      </Button>
-    </div>
+    <section>
+      {/* since we don't need to show loading state for the entire home page, like we can just show the */}
+      {/* CategoriesList without loading only need to show loading state for the PropertiesContainer */}
+      {/* thats why we went with this suspense and fallback method for other pages we can just use loading.tsx */}
+      <CategoriesList category={searchParams?.category} search={searchParams?.search} />
+      <Suspense fallback={<LoadingCards />}>
+        {/* below directive comment to fix the ts error warning of - cannot be used as a JSX component */}
+        {/* @ts-expect-error Server Component */}
+        <PropertiesContainer category={searchParams?.category} search={searchParams?.search} />
+      </Suspense>
+    </section>
   );
-};
+}
 export default HomePage;

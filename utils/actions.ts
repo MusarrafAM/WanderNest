@@ -6,6 +6,8 @@ import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { uploadImage } from "./supabase";
+import { warnOnce } from "@prisma/client/runtime/library";
+import { it } from "node:test";
 
 // this getAuthUser helper function, we only use in this file for not export.
 // this will get the current suer from clerk, if no user throw error.
@@ -217,4 +219,78 @@ export const fetchProperties = async ({
     },
   });
   return properties;
+};
+
+export const fetchFavoriteId = async ({ propertyId }: { propertyId: string }) => {
+  const user = await getAuthUser();
+  const favorite = await db.favorite.findFirst({
+    where: {
+      propertyId,
+      profileId: user.id,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return favorite?.id || null;
+};
+
+export const toggleFavoriteAction = async (prevState: {
+  propertyId: string;
+  favoriteId: string | null;
+  pathname: string;
+}) => {
+  const user = await getAuthUser();
+  const { propertyId, favoriteId, pathname } = prevState; // this prevStave value can be accessed since we used bind method on action (FavoriteToggleForm).
+
+  try {
+    if (favoriteId) {
+      await db.favorite.delete({
+        where: {
+          id: favoriteId,
+        },
+      });
+    } else {
+      await db.favorite.create({
+        data: {
+          propertyId,
+          profileId: user.id,
+        },
+      });
+    }
+    // Since we will use this action in multiple palaces(home, favorite page)
+    // we need to get pathname and revalidate it. (if just only one path we can just hard coded it, but here its not.)
+    revalidatePath(pathname);
+    return { message: favoriteId ? "Removed from Faves" : "Added to Faves" };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const fetchFavorites = async () => {
+  const user = await getAuthUser();
+  const favorites = await db.favorite.findMany({
+    where: {
+      profileId: user.id,
+    },
+    // We only get favorite's id, profileId, and propertyId from this.
+    // We are only selecting the related `property` fields.
+    //! Very Important:
+    //! Since we defined a relation between `Favorite` and `Property` in the schema,
+    //! we can access the related `Property` fields inside `select`.
+    select: {
+      property: {
+        select: {
+          id: true,
+          name: true,
+          tagline: true,
+          price: true,
+          country: true,
+          image: true,
+        },
+      },
+    },
+  });
+  // structure the rerun data same as fetchProperty details so we can reuse this
+  return favorites.map((favorite) => favorite.property);
 };
