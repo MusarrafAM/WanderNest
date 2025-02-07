@@ -294,3 +294,19 @@ export const fetchFavorites = async () => {
   // structure the rerun data same as fetchProperty details so we can reuse this
   return favorites.map((favorite) => favorite.property);
 };
+
+export const fetchPropertyDetails = (id: string) => {
+  return db.property.findUnique({
+    where: {
+      id,
+    },
+
+    // The `include` option is used to fetch related data along with the main record.
+    // - `profile: true` ensures that the related `profile` data (e.g., owner or agent details) is included.
+    // - `select` is used when you want to fetch only specific fields from a table.
+    // - `include` is used to add related records along with the fetched one.
+    include: {
+      profile: true,
+    },
+  });
+};
