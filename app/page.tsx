@@ -16,8 +16,6 @@ function HomePage({ searchParams }: { searchParams: { category?: string; search?
       {/* thats why we went with this suspense and fallback method for other pages we can just use loading.tsx */}
       <CategoriesList category={searchParams?.category} search={searchParams?.search} />
       <Suspense fallback={<LoadingCards />}>
-        {/* below directive comment to fix the ts error warning of - cannot be used as a JSX component */}
-        {/* @ts-expect-error Server Component */}
         <PropertiesContainer category={searchParams?.category} search={searchParams?.search} />
       </Suspense>
     </section>

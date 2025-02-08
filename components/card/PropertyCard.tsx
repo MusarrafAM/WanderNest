@@ -27,7 +27,6 @@ function PropertyCard({ property }: { property: PropertyCardProps }) {
           {/* this substring make sure even somehow user enter more text it will only show limited text for consistent look. */}
           <h3 className="text-sm font-semibold mt-1">{name.substring(0, 30)}</h3>
           {/* below directive comment to fix the ts error warning of - cannot be used as a JSX component */}
-          {/* @ts-expect-error Server Component */}
           <PropertyRating inPage={false} propertyId={propertyId} />
         </div>
         <p className="text-sm mt-1 text-muted-foreground ">{tagline.substring(0, 40)}</p>

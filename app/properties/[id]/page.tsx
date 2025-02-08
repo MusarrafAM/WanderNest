@@ -41,7 +41,6 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
         <div className="flex items-center gap-x-4">
           <ShareButton name={property.name} propertyId={property.id} />
           {/* below directive comment to fix the ts error warning of - cannot be used as a JSX component */}
-          {/* @ts-expect-error Server Component */}
           <FavoriteToggleButton propertyId={property.id} />
         </div>
       </header>
@@ -53,7 +52,6 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
           <div className="flex gap-x-4 items-center">
             <h1 className="text-xl font-bold">{property.name}</h1>
             {/* below directive comment to fix the ts error warning of - cannot be used as a JSX component */}
-            {/* @ts-expect-error Server Component */}
             <PropertyRating inPage propertyId={property.id} />
           </div>
           <PropertyDetails details={details} />
