@@ -1,6 +1,6 @@
 "use client";
 import { Input } from "../ui/input";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useState, useEffect } from "react";
 
@@ -8,7 +8,6 @@ import { useState, useEffect } from "react";
 function NavSearch() {
   const searchParams = useSearchParams(); //This is how we get the search params in the client component.
 
-  const pathname = usePathname(); // getting the url
   const { replace } = useRouter(); // with the replace we can programmatically redirect the user.
   const [search, setSearch] = useState(searchParams.get("search")?.toString() || "");
 
@@ -20,7 +19,7 @@ function NavSearch() {
     } else {
       params.delete("search");
     }
-    replace(`${pathname}?${params.toString()}`); // programmatically redirection
+    replace(`/?${params.toString()}`); // programmatically redirection to homepage with searchparams.
   }, 300); // 0.3 sec debounce
 
   // this useEffect is extra no need to worry, if the user remove the "search" from url manually,
