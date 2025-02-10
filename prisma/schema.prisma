@@ -22,6 +22,8 @@ model Profile {
   properties      Property[] 
   // One Profile (User) can have multiple Favorite properties, and each Property can have multiple favourite profiles (many to many rel).
   favorites    Favorite[]
+  reviews Review[]
+  // a user can leave many reviews, but in the review we can only have one user.
 
 }
 
@@ -42,6 +44,7 @@ model Property {
   amenities   String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+  reviews Review[]
   
   // Relationship between Property and Profile
   profile     Profile    @relation(fields: [profileId], references: [clerkId], onDelete: Cascade) 
@@ -50,6 +53,7 @@ model Property {
   // onDelete: Cascade => When a Profile is deleted, all its associated Property records will also be deleted.
   profileId   String
   favorites    Favorite[]
+  // each property can have mutiple reviews, each indivudual review is reference to one property.
 }
 
 
@@ -64,4 +68,16 @@ model Favorite {
   property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   propertyId String
 
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  profile   Profile  @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
+  profileId String
+  property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

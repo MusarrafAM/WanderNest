@@ -9,9 +9,12 @@ import PropertyDetails from "@/components/properties/PropertyDetails";
 import PropertyMap from "@/components/properties/PropertyMap";
 import ShareButton from "@/components/properties/ShareButton";
 import UserInfo from "@/components/properties/UserInfo";
+import PropertyReviews from "@/components/reviews/PropertyReviews";
+import SubmitReview from "@/components/reviews/SubmitReview";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { fetchPropertyDetails } from "@/utils/actions";
+import { fetchPropertyDetails, findExistingReview } from "@/utils/actions";
+import { auth } from "@clerk/nextjs/server";
 import dynamic from "next/dynamic";
 
 import { redirect } from "next/navigation";
@@ -19,6 +22,13 @@ import { redirect } from "next/navigation";
 async function PropertyDetailsPage({ params }: { params: { id: string } }) {
   const property = await fetchPropertyDetails(params.id);
   if (!property) redirect("/");
+
+  const { userId } = auth(); // checks for login
+  const isNotOwner = property.profile.clerkId !== userId; //checks for not post owner
+  const reviewDoesNotExist =
+    userId && isNotOwner && !(await findExistingReview(userId, property.id));
+  //! the above lien checks if the user is logged in, and not the post owner, and not already posted a review for the property.
+
   const { baths, bedrooms, beds, guests } = property;
   const details = { baths, bedrooms, beds, guests };
   const firstName = property.profile.firstName;
@@ -40,7 +50,6 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
         <h1 className="text-4xl font-bold ">{property.tagline}</h1>
         <div className="flex items-center gap-x-4">
           <ShareButton name={property.name} propertyId={property.id} />
-          {/* below directive comment to fix the ts error warning of - cannot be used as a JSX component */}
           <FavoriteToggleButton propertyId={property.id} />
         </div>
       </header>
@@ -51,7 +60,6 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
         <div className="lg:col-span-8">
           <div className="flex gap-x-4 items-center">
             <h1 className="text-xl font-bold">{property.name}</h1>
-            {/* below directive comment to fix the ts error warning of - cannot be used as a JSX component */}
             <PropertyRating inPage propertyId={property.id} />
           </div>
           <PropertyDetails details={details} />
@@ -65,6 +73,9 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
           <BookingCalendar />
         </div>
       </section>
+
+      {reviewDoesNotExist && <SubmitReview propertyId={property.id} />}
+      <PropertyReviews propertyId={property.id} />
     </section>
   );
 }
