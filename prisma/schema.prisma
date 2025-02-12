@@ -24,6 +24,7 @@ model Profile {
   favorites    Favorite[]
   reviews Review[]
   // a user can leave many reviews, but in the review we can only have one user.
+  bookings Booking[]
 
 }
 
@@ -45,6 +46,7 @@ model Property {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   reviews Review[]
+  bookings Booking[]
   
   // Relationship between Property and Profile
   profile     Profile    @relation(fields: [profileId], references: [clerkId], onDelete: Cascade) 
@@ -78,6 +80,21 @@ model Review {
   propertyId String
   rating    Int
   comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Booking {
+  id        String   @id @default(uuid())
+  profile   Profile  @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
+  profileId String
+  property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String
+  orderTotal     Int
+  totalNights    Int
+  checkIn   DateTime
+  checkOut  DateTime
+  paymentStatus Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
