@@ -4,8 +4,18 @@ import { amenities, Amenity, conservativeAmenities } from "@/utils/amenities";
 import { Checkbox } from "@/components/ui/checkbox";
 
 function AmenitiesInput({ defaultValue }: { defaultValue?: Amenity[] }) {
+  // we need to create this conservativeAmenitiesWithIcons, since we don't fetch the icons from the db.
+  // We need to create a new object with the amenities and icons. when try to update with previous values
+  const conservativeAmenitiesWithIcons = defaultValue?.map(({ name, selected }) => {
+    return {
+      name,
+      selected,
+      icon: conservativeAmenities.find((amenity) => amenity.name === name)!.icon,
+    };
+  });
+
   const [selectedAmenities, setSelectedAmenities] = useState<Amenity[]>(
-    defaultValue || conservativeAmenities
+    conservativeAmenitiesWithIcons || conservativeAmenities
     //! if want to be funny use amenities OR want to be professional use conservativeAmenities, just change above oen palace is enough
   );
 
