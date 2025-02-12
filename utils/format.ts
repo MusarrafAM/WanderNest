@@ -11,12 +11,18 @@ export const formatCurrency = (amount: number | null) => {
 };
 
 // eg result of this formatDate = February 12, 2025
-export const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat("en-US", {
+export const formatDate = (date: Date, onlyMonth?: boolean) => {
+  const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "long",
-    day: "numeric",
-  }).format(date);
+  };
+
+  // if onlyMonth prop provided day will not be added to the return
+  if (!onlyMonth) {
+    options.day = "numeric";
+  }
+
+  return new Intl.DateTimeFormat("en-US", options).format(date);
 };
 
 export function formatQuantity(quantity: number, noun: string): string {

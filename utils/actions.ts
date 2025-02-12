@@ -15,6 +15,7 @@ import { uploadImage } from "./supabase";
 import { warnOnce } from "@prisma/client/runtime/library";
 import { it } from "node:test";
 import { calculateTotals } from "./calculateTotals";
+import { formatDate } from "./format";
 
 // this getAuthUser helper function, we only use in this file for not export.
 // this will get the current suer from clerk, if no user throw error.
@@ -680,4 +681,57 @@ export const fetchReservations = async () => {
     },
   });
   return reservations;
+};
+
+// this is a helper function for the fetchStats
+const getAdminUser = async () => {
+  const user = await getAuthUser();
+  if (user.id !== process.env.ADMIN_USER_ID) redirect("/");
+  return user;
+};
+
+export const fetchStats = async () => {
+  await getAdminUser();
+
+  const usersCount = await db.profile.count();
+  const propertiesCount = await db.property.count();
+  const bookingsCount = await db.booking.count();
+
+  return {
+    usersCount,
+    propertiesCount,
+    bookingsCount,
+  };
+};
+
+export const fetchChartsData = async () => {
+  await getAdminUser();
+  const date = new Date();
+  // Create a date that was before 6 month, because we only show last 6 months stats in chart.
+  date.setMonth(date.getMonth() - 6);
+  const sixMonthsAgo = date;
+
+  const bookings = await db.booking.findMany({
+    where: {
+      createdAt: {
+        gte: sixMonthsAgo,
+      },
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
+
+  let bookingsPerMonth = bookings.reduce((total, current) => {
+    const date = formatDate(current.createdAt, true);
+
+    const existingEntry = total.find((entry) => entry.date === date);
+    if (existingEntry) {
+      existingEntry.count += 1;
+    } else {
+      total.push({ date, count: 1 });
+    }
+    return total;
+  }, [] as Array<{ date: string; count: number }>);
+  return bookingsPerMonth;
 };
