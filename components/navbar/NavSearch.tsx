@@ -34,7 +34,7 @@ function NavSearch() {
     <Input
       type="search" // this will add the close clear or close button when type something in input field.
       placeholder="find a property..."
-      className="max-w-xs dark:bg-muted "
+      className="sm:max-w-xs max-w-full bg-muted"
       onChange={(e) => {
         setSearch(e.target.value); // updating the search state.
         handleSearch(e.target.value); // this will handle the debounced redirection to the homepage with new search.
