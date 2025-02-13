@@ -1,7 +1,8 @@
 datasource db {
-  provider          = "postgresql"
+  // provider          = "postgresql"
+  provider          = "mongodb"
   url               = env("DATABASE_URL")
-  directUrl         = env("DIRECT_URL")
+  // directUrl         = env("DIRECT_URL")  // We only need this when working with supabase postgre
 }
 
 generator client {
@@ -9,7 +10,7 @@ generator client {
 }
 
 model Profile {
-  id           String     @id @default(uuid()) // Primary Key (PK), auto-generated UUID
+  id           String     @id @default(uuid())  @map("_id")// Primary Key (PK), auto-generated UUID
   clerkId      String     @unique // Unique identifier (e.g., from Clerk authentication)
   firstName    String
   lastName     String
@@ -30,7 +31,7 @@ model Profile {
 
 
 model Property {
-  id          String     @id @default(uuid())
+  id          String     @id @default(uuid()) @map("_id")
   name        String
   tagline     String
   category    String
@@ -60,7 +61,7 @@ model Property {
 
 
 model Favorite {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @map("_id")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -73,7 +74,7 @@ model Favorite {
 }
 
 model Review {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @map("_id")
   profile   Profile  @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
   profileId String
   property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
@@ -85,7 +86,7 @@ model Review {
 }
 
 model Booking {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @map("_id")
   profile   Profile  @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
   profileId String
   property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
