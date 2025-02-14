@@ -23,7 +23,8 @@ export default function RootLayout({
         <body className={inter.className}>
           <Providers>
             <Navbar />
-            <main className="container py-2 sm:py-10">{children}</main>
+            {/* since we added Footer, changed the py to pt. */}
+            <main className="container py-2 sm:pt-8 sm:py-3">{children}</main>
           </Providers>
         </body>
       </html>

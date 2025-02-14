@@ -1,5 +1,6 @@
 import FavoriteToggleButton from "@/components/card/FavoriteToggleButton";
 import PropertyRating from "@/components/card/PropertyRating";
+import Footer from "@/components/footer/Footer";
 import Amenities from "@/components/properties/Amenities";
 import BreadCrumbs from "@/components/properties/BreadCrumbs";
 import Description from "@/components/properties/Description";
@@ -50,43 +51,46 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
   const profileImage = property.profile.profileImage;
 
   return (
-    <section>
-      <BreadCrumbs name={property.name} />
-      <header className="flex justify-between items-center mt-4">
-        <h1 className="text-4xl font-bold ">{property.tagline}</h1>
-        <div className="flex items-center gap-x-4">
-          <ShareButton name={property.name} propertyId={property.id} />
-          <FavoriteToggleButton propertyId={property.id} />
-        </div>
-      </header>
-      <ImageContainer mainImage={property.image} name={property.name} />
-      {/* 2 column setup */}
-      {/* split into 12 col, in first div used 8 and second div has 4, both add upto 12 col */}
-      <section className="lg:grid lg:grid-cols-12 gap-x-12 mt-12">
-        <div className="lg:col-span-8">
-          <div className="flex gap-x-4 items-center">
-            <h1 className="text-xl font-bold">{property.name}</h1>
-            <PropertyRating inPage propertyId={property.id} />
+    <>
+      <section>
+        <BreadCrumbs name={property.name} />
+        <header className="flex justify-between items-center mt-4">
+          <h1 className="text-4xl font-bold ">{property.tagline}</h1>
+          <div className="flex items-center gap-x-4">
+            <ShareButton name={property.name} propertyId={property.id} />
+            <FavoriteToggleButton propertyId={property.id} />
           </div>
-          <PropertyDetails details={details} />
-          <UserInfo profile={{ firstName, profileImage }} />
-          <Separator className="mt-4" />
-          <Description description={property.description} />
-          <Amenities amenities={property.amenities} />
-          <DynamicMap countryCode={property.country} />
-        </div>
-        <div className="lg:col-span-4 flex flex-col items-center">
-          <DynamicBookingWrapper
-            propertyId={property.id}
-            price={property.price}
-            bookings={property.bookings}
-          />
-        </div>
-      </section>
+        </header>
+        <ImageContainer mainImage={property.image} name={property.name} />
+        {/* 2 column setup */}
+        {/* split into 12 col, in first div used 8 and second div has 4, both add upto 12 col */}
+        <section className="lg:grid lg:grid-cols-12 gap-x-12 mt-12">
+          <div className="lg:col-span-8">
+            <div className="flex gap-x-4 items-center">
+              <h1 className="text-xl font-bold">{property.name}</h1>
+              <PropertyRating inPage propertyId={property.id} />
+            </div>
+            <PropertyDetails details={details} />
+            <UserInfo profile={{ firstName, profileImage }} />
+            <Separator className="mt-4" />
+            <Description description={property.description} />
+            <Amenities amenities={property.amenities} />
+            <DynamicMap countryCode={property.country} />
+          </div>
+          <div className="lg:col-span-4 flex flex-col items-center">
+            <DynamicBookingWrapper
+              propertyId={property.id}
+              price={property.price}
+              bookings={property.bookings}
+            />
+          </div>
+        </section>
 
-      {reviewDoesNotExist && <SubmitReview propertyId={property.id} />}
-      <PropertyReviews propertyId={property.id} />
-    </section>
+        {reviewDoesNotExist && <SubmitReview propertyId={property.id} />}
+        <PropertyReviews propertyId={property.id} />
+      </section>
+      <Footer />
+    </>
   );
 }
 export default PropertyDetailsPage;

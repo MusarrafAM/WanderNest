@@ -2,6 +2,7 @@ import CategoriesList from "@/components/home/CategoriesList";
 import PropertiesContainer from "@/components/home/PropertiesContainer";
 import LoadingCards from "@/components/card/LoadingCards";
 import { Suspense } from "react";
+import Footer from "@/components/footer/Footer";
 
 // this is how we access the searchParams in server component.
 function HomePage({ searchParams }: { searchParams: { category?: string; search?: string } }) {
@@ -17,6 +18,7 @@ function HomePage({ searchParams }: { searchParams: { category?: string; search?
       <CategoriesList category={searchParams?.category} search={searchParams?.search} />
       <Suspense fallback={<LoadingCards />}>
         <PropertiesContainer category={searchParams?.category} search={searchParams?.search} />
+        <Footer />
       </Suspense>
     </section>
   );
