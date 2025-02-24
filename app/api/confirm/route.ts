@@ -11,7 +11,6 @@ export const GET = async (req: NextRequest) => {
 
   try {
     const session = await stripe.checkout.sessions.retrieve(session_id);
-    // console.log(session);
     const bookingId = session.metadata?.bookingId;
 
     if (session.status === "complete" && bookingId) {
