@@ -17,12 +17,7 @@ function HomePage({ searchParams }: { searchParams: { category?: string; search?
       {/* thats why we went with this suspense and fallback method for other pages we can just use loading.tsx */}
       <CategoriesList category={searchParams?.category} search={searchParams?.search} />
       <Suspense fallback={<LoadingCards />}>
-        <div>
-          <PropertiesContainer
-            category={searchParams?.category}
-            search={searchParams?.search}
-          />
-        </div>
+        <PropertiesContainer category={searchParams?.category} search={searchParams?.search} />
 
         <Footer />
       </Suspense>
