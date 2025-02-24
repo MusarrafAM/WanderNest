@@ -19,11 +19,13 @@ async function PropertiesContainer({
 
   if (properties.length === 0) {
     return (
-      <EmptyList
-        heading="No results."
-        message="Try changing or removing some of your filters."
-        btnText="Clear Filters"
-      />
+      <div className="h-[50vh]">
+        <EmptyList
+          heading="No results."
+          message="Try changing or removing some of your filters."
+          btnText="Clear Filters"
+        />
+      </div>
     );
   }
 
