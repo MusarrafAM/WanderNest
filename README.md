@@ -1,28 +1,94 @@
-# WanderNest
+# 🏡 WanderNest – Seamless Vacation Rental Experience
 
-Deployed Link = https://wander-nest-production.vercel.app
+🔗 **Live Demo:** [https://wander-nest-production.vercel.app](https://wander-nest-production.vercel.app)  
+📦 **GitHub Repo:** [WanderNest](https://github.com/MusarrafAM/WanderNest)
 
-WanderNest is a property rental platform built with Next.js and TypeScript. It allows users to search, favorite, review, and book properties. Users can also post their properties with all the relevant details, including accommodation and amenities.
+---
 
-## Features
+## 📌 Project Overview
 
-- **Search for Properties**: Users can search for properties with debouncing and filter by categories.
-- **Dark/Light Theme**: Switch between light and dark modes for better accessibility.
-- **Favorites**: Users can mark properties as favorites and view them in the "Favorites" page.
-- **Reviews**: Leave reviews for properties with a 5-star rating and a message.
-- **Property Sharing**: Share properties via WhatsApp, Twitter, or email.
-- **Reservation**: Reserve a property by selecting a specific date or date range and making a payment using Stripe.
-- **Property Posting**: Post new properties with relevant details like accommodation, amenities, and photos.
-  
-## Tech Stack
+**WanderNest** is a modern and secure vacation rental platform that enables users to **search**, **book**, and **review** properties, while allowing hosts to **list accommodations** with full control over features, pricing, and availability.
 
-- **Frontend**: Next.js, TypeScript, Tailwind CSS, ShadCN (for components)
-- **Authentication**: Clerk
-- **Database**: Supabase PostgreSQL with Prisma
-- **Image Storage**: Supabase Bucket
-- **State Management**: Zustand
-- **Validation**: Zod
-- **Payment**: Stripe
+Unlike traditional rental apps, WanderNest emphasizes **interactivity, user engagement, visual clarity**, and **modern development practices**, built entirely using **Next.js**, **TypeScript**, and **Supabase**. The project offers a **scalable architecture**, clean UI, and real-world integrations such as **Stripe for payments** and **Clerk for authentication**.
+
+---
+
+## 🧠 Why These Technologies?
+
+| Tech | Role | Justification |
+|------|------|---------------|
+| **Next.js** | Frontend Framework | SSR & routing out of the box for optimal SEO and performance |
+| **TypeScript** | Type Safety | Reduces bugs and improves code maintainability |
+| **Tailwind CSS + ShadCN** | Styling & Components | Utility-first CSS and prebuilt accessible components for rapid UI development |
+| **Supabase (PostgreSQL + Buckets)** | Database & Media | Modern backend-as-a-service with real-time DB and media support |
+| **Prisma** | ORM | Simplifies DB interactions and ensures type-safe queries |
+| **Zustand** | State Management | Lightweight and scalable for local/global state handling |
+| **Stripe** | Payments | Secure and developer-friendly checkout experience |
+| **Clerk** | Authentication | Plug-and-play auth with roles and session management |
+| **Zod** | Validation | Schema-based runtime validation to prevent malformed input |
+
+---
+
+## 💡 Features at a Glance
+
+- 🔍 Debounced **search** with category filtering  
+- 🌙 **Light/Dark mode** toggle  
+- ❤️ Save and view **favorite properties**  
+- ⭐ **Rate and review** properties (5-star + comment)  
+- 🔗 Share via **WhatsApp, Twitter, or Email**  
+- 📅 Book stays with date picker + **Stripe** checkout  
+- 🏠 **Host dashboard** to post and manage properties  
+- 📸 Upload photos and list amenities using Supabase Buckets
+
+---
+
+## ✅ Best Practices Followed
+
+- 🔒 Role-based secure routing via Clerk  
+- ♻️ Reusable components and layout patterns (e.g., layout.tsx, modals, toasts)  
+- 📦 Modular folder structure with clear separation of concerns (`hooks/`, `lib/`, `components/`)  
+- 🧼 ESLint + Prettier for consistent code style  
+- 🚫 Client-side data validation with Zod  
+- ⌨️ Strong typing across the stack with TypeScript  
+- 🔐 Sensitive environment config via `.env.local`
+
+---
+
+## 🧩 Applied Algorithms & Patterns
+
+- **Debounced Search**: Optimized search queries using `setTimeout` and cleanup logic  
+- **Optimistic UI Updates**: Instant feedback for favorites and reviews before server confirmation  
+- **Responsive Layouts**: Grid and Flexbox patterns with Tailwind for mobile-first design  
+- **Design Patterns Used**:
+  - **Container/Presentational Pattern**
+  - **Hook-based abstraction for logic (e.g., `useDebounce`, `useFavorite`)**
+  - **Atomic Design Principles** for reusable UI elements
+
+---
+
+## 🧪 Testing Strategy
+
+| Test Type | Tools | Coverage |
+|-----------|-------|----------|
+| **Manual Integration Testing** | DevTools, Mobile Viewports | UI responsiveness, flow from search → book → pay |
+| **API Endpoint Testing** | Supabase Table Rules & Logs | Validates real-time data and permissions |
+| **Client-Side Testing** *(Planned)* | Jest + React Testing Library | Component behavior (e.g., modals, filters)  
+| **User Feedback (UAT)** | Collected via surveys | Feedback-driven updates for UI & UX  
+
+---
+
+## 🚀 Deployment Instructions
+
+### Frontend: **Vercel**
+- Connect your GitHub repo
+- Add the following environment variables under project settings:
+  ```env
+  NEXT_PUBLIC_SUPABASE_URL=
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=
+  STRIPE_SECRET_KEY=
+  CLERK_FRONTEND_API=
+  CLERK_API_KEY=
+
 
 ## Installation
 
