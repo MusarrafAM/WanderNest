@@ -89,8 +89,17 @@ Unlike traditional rental apps, WanderNest emphasizes **interactivity, user enga
   CLERK_FRONTEND_API=
   CLERK_API_KEY=
 
+### Database: **Supabase**
+- Create a new project
+- Enable storage buckets
+- Configure tables for users, properties, bookings, reviews
 
-## Installation
+### Payments: **Stripe**
+- Enable Checkout & Webhooks
+- Copy the `STRIPE_SECRET_KEY` to your `.env.local` file
+
+
+## 💻 Run Locally
 
 To run this project locally, follow these steps:
 
@@ -134,6 +143,9 @@ To run this project locally, follow these steps:
     ```bash
     npm run dev
     ```
+
+ Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
 
 # Screenshot
 ![Image](https://github.com/user-attachments/assets/d2365247-0f03-4f1c-9242-cd10bf72e8ed)
