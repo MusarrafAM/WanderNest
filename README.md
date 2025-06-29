@@ -166,3 +166,10 @@ To run this project locally, follow these steps:
 
 ![Image](https://github.com/user-attachments/assets/bb02c5a3-92c3-4e0b-8a78-f66b10148e06)
 
+## 📬 Contact
+
+For any inquiries, suggestions, or feedback:
+
+- 📧 **Email:** muhammedmusarraf@gmail.com  
+- 📱 **Phone:** +94 779434493
+
