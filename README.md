@@ -83,11 +83,11 @@ Unlike traditional rental apps, WanderNest emphasizes **interactivity, user enga
 - Connect your GitHub repo
 - Add the following environment variables under project settings:
   ```env
-  NEXT_PUBLIC_SUPABASE_URL=
-  NEXT_PUBLIC_SUPABASE_ANON_KEY=
-  STRIPE_SECRET_KEY=
-  CLERK_FRONTEND_API=
-  CLERK_API_KEY=
+  NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+  STRIPE_SECRET_KEY=your_stripe_secret_key
+  CLERK_FRONTEND_API=your_clerk_frontend_api
+  CLERK_API_KEY=your_clerk_api_key
 
 ### Database: **Supabase**
 - Create a new project
