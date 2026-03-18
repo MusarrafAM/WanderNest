@@ -8,7 +8,8 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "yexictkjvucwygxiyqsr.supabase.co", //added this so we can retrieve image from our supabase.
+        hostname: "ryhijqaosvpliphgjyga.supabase.co", //added this so we can retrieve image from our supabase.
+        pathname: "/storage/v1/object/public/**",
       },
     ],
   },
